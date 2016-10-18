@@ -40,14 +40,39 @@ class AverageRatingsHandler(webapp2.RequestHandler):
         product.average_rating = average_rating
         product.put()
 
-        # October 25th's homework (over the midterm break) is to finish understanding what Professor Ng in his free
-        # Coursera course lectured on regarding recommender systems. The URL for the first of the
-        # lectures is https://www.coursera.org/learn/machine-learning/lecture/Rhg6r/problem-formulation
+        # October 25th's homework (over the midterm break) is to continue understanding what Professor Ng in his free
+        # Coursera course tells us about recommender systems. The URLs for the lectures we are watching is:
+        #
+        # Recommender Systems Lectures (Week 9 of Ng's Course)
+        # ====================================================
 
-        # We will use this theory to implement our recommender system. I have previously studied
-        # the theory of latent Dirichlet allocation (LDA), but I haven't watched these lectures or implemented
-        # it, so I will be doing the independent study along with you.
+        # Problem Formulation (7 minutes):
+        #
+        #   * https://www.coursera.org/learn/machine-learning/lecture/Rhg6r/problem-formulation
+        #
+        # Content-Based Recommendations (14 minutes):
+        #
+        #   * https://www.coursera.org/learn/machine-learning/lecture/uG59z/content-based-recommendations
+        #
+        # Collaborative Filtering (10 minutes):
+        #
+        #   * https://www.coursera.org/learn/machine-learning/lecture/2WoBV/collaborative-filtering
+        #
+        # Collaborative Filtering Algorithm (8 minutes):
+        #
+        #   * https://www.coursera.org/learn/machine-learning/lecture/f26nH/collaborative-filtering-algorithm
+        #
 
+        #  I am unclear so far how critical it is to study the remaining two lectures of Week 9:
+        #
+        # Vectorization - Low Rank Matrix Factorization (8 minutes):
+        #
+        #   * https://www.coursera.org/learn/machine-learning/lecture/CEXN0/vectorization-low-rank-matrix-factorization
+        #
+        # Implementation Detail - Mean Normalization (8 minutes):
+        #
+        #   * https://www.coursera.org/learn/machine-learning/lecture/Adk8G/implementational-detail-mean-normalization
+        #
 
 app = webapp2.WSGIApplication([
     webapp2.Route(r'/_ah/queue/average-ratings', handler=AverageRatingsHandler, name='average-ratings-for-product'),
