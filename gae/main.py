@@ -4,18 +4,14 @@ import webapp2
 
 from google.appengine.api import taskqueue
 
-from review import Review
+from review import Review, reviews_for_product, reviews_for_member
 from review_util import review_properties, write_reviews
 
 
 class ReviewsForProductHandler(webapp2.RequestHandler):
 
     def get(self, product_id):
-        q = Review.query().filter(Review.product_id == product_id)
-        count = q.count()
-        to_fetch = count if count < 10 else 10
-        reviews = q.fetch(to_fetch)
-        print("Found " + str(count) + " reviews for product " + product_id + ", returning " + str(to_fetch))
+        reviews = reviews_for_product(product_id)
         self.response.headers["Content-Type"] = "application/json"
         write_reviews(reviews, self.response)
 
@@ -23,11 +19,7 @@ class ReviewsForProductHandler(webapp2.RequestHandler):
 class ReviewsForMemberHandler(webapp2.RequestHandler):
 
     def get(self, member_id):
-        q = Review.query().filter(Review.member_id == member_id)
-        count = q.count()
-        to_fetch = count if count < 10 else 10
-        reviews = q.fetch(to_fetch)
-        print("Found " + str(count) + " reviews for member " + member_id + ", returning " + str(to_fetch))
+        reviews = reviews_for_member(member_id)
         self.response.headers["Content-Type"] = "application/json"
         write_reviews(reviews, self.response)
 
