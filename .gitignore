@@ -9,6 +9,10 @@
 
 data/amazon/Movies_and_TV_5.json
 
+# We put our GAE datastore here and don't check it in.
+
+data/gae.datastore
+
 # Emacs turds
 
 **/*.*~
