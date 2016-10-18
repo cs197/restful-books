@@ -1,3 +1,5 @@
+import time
+
 import json
 
 import webapp2
@@ -9,7 +11,6 @@ from review_util import review_properties, write_reviews
 
 
 class ReviewsForProductHandler(webapp2.RequestHandler):
-
     def get(self, product_id):
         reviews = reviews_for_product(product_id)
         self.response.headers["Content-Type"] = "application/json"
@@ -17,7 +18,6 @@ class ReviewsForProductHandler(webapp2.RequestHandler):
 
 
 class ReviewsForMemberHandler(webapp2.RequestHandler):
-
     def get(self, member_id):
         reviews = reviews_for_member(member_id)
         self.response.headers["Content-Type"] = "application/json"
@@ -25,7 +25,6 @@ class ReviewsForMemberHandler(webapp2.RequestHandler):
 
 
 class ReviewHandler(webapp2.RequestHandler):
-
     # TODO: Post should update a review (or fail) if there is one already existing instead of creating a duplicate.
 
     def post(self, product_id, member_id):
@@ -58,12 +57,14 @@ class ReviewHandler(webapp2.RequestHandler):
 
 
 class AverageRatingTaskLauncher(webapp2.RequestHandler):
-
     def get(self, product_id):
+        current_time_millis = int(round(time.time() * 1000))
+        task_name = 'average_ratings_for_product_' + product_id + '-' + str(current_time_millis)
         taskqueue.add(queue_name='average-ratings',
-                      name='average_ratings_for_product_' + product_id,
+                      name=task_name,
                       payload=product_id)
-        self.response.write("Enqueued task to average ratings for product " + product_id)
+        self.response.write(
+            "Enqueued task to average ratings for product " + product_id + " at " + str(current_time_millis))
 
 
 app = webapp2.WSGIApplication([
