@@ -60,9 +60,10 @@ class AverageRatingTaskLauncher(webapp2.RequestHandler):
     def get(self, product_id):
         current_time_millis = int(round(time.time() * 1000))
         task_name = 'average_ratings_for_product_' + product_id + '-' + str(current_time_millis)
+        payload = "{ \"product_id\": \"" + product_id + "\" }\n"
         taskqueue.add(queue_name='average-ratings',
                       name=task_name,
-                      payload=product_id)
+                      payload=payload)
         self.response.write(
             "Enqueued task to average ratings for product " + product_id + " at " + str(current_time_millis))
 
