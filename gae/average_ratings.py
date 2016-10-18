@@ -5,6 +5,8 @@ import json
 
 from review import reviews_for_product
 
+from product import Product
+
 
 class AverageRatingsHandler(webapp2.RequestHandler):
 
@@ -24,7 +26,8 @@ class AverageRatingsHandler(webapp2.RequestHandler):
         reviews_len = len(reviews)
 
         if reviews_len == 0:
-            print("No reviews for product with product_id " + product_id)
+            print("No reviews for product with product_id " + product_id + ", returning.")
+            return
 
         rating_accumulator = 0.0
 
@@ -32,9 +35,12 @@ class AverageRatingsHandler(webapp2.RequestHandler):
             rating_accumulator += review.rating
 
         average_rating = rating_accumulator / reviews_len
-        print("Average rating for product_id " + product_id + " is " + str(average_rating))
 
-        # October 25th's homework (over the midterm break) is to understand what Professor Ng in his free
+        product = Product(id=product_id)
+        product.average_rating = average_rating
+        product.put()
+
+        # October 25th's homework (over the midterm break) is to finish understanding what Professor Ng in his free
         # Coursera course lectured on regarding recommender systems. The URL for the first of the
         # lectures is https://www.coursera.org/learn/machine-learning/lecture/Rhg6r/problem-formulation
 
