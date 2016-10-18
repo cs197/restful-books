@@ -1,6 +1,10 @@
 
 import webapp2
 
+import json
+
+from review import reviews_for_product
+
 
 class AverageRatingsHandler(webapp2.RequestHandler):
 
@@ -13,15 +17,30 @@ class AverageRatingsHandler(webapp2.RequestHandler):
         # Finally you will need to get the Product object from the datastore (see product.py),
         # and update the average rating (or if there is no Product object, make it first).
 
-        # Part II of October 18th's homework is to understand what Professor Ng in his free
+        payload_string = self.request.body
+        payload_dict = json.loads(payload_string)
+        product_id = payload_dict["product_id"]
+        reviews = reviews_for_product(product_id)
+        reviews_len = len(reviews)
+
+        if reviews_len == 0:
+            print("No reviews for product with product_id " + product_id)
+
+        rating_accumulator = 0.0
+
+        for review in reviews:
+            rating_accumulator += review.rating
+
+        average_rating = rating_accumulator / reviews_len
+        print("Average rating for product_id " + product_id + " is " + str(average_rating))
+
+        # October 25th's homework (over the midterm break) is to understand what Professor Ng in his free
         # Coursera course lectured on regarding recommender systems. The URL for the first of the
         # lectures is https://www.coursera.org/learn/machine-learning/lecture/Rhg6r/problem-formulation
-        #
-        # We will use this theory to implement our recommender system. I have previously studied
-        # the theory of latent dirichlet allocation, but I haven't watched these lectures or implemented
-        # it, so I will be doing the independent study along with you.
 
-        print("We're in the post for AverageRatingsHandler with payload " + self.request.body)
+        # We will use this theory to implement our recommender system. I have previously studied
+        # the theory of latent Dirichlet allocation (LDA), but I haven't watched these lectures or implemented
+        # it, so I will be doing the independent study along with you.
 
 
 app = webapp2.WSGIApplication([
